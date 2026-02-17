@@ -8,6 +8,13 @@ import { prisma } from "./app/prisma.js"
 
 import authRoutes from "./app/auth/auth.routes.js"
 import userRoutes from "./app/user/user.routes.js"
+import caseRoutes from "./app/case/case.routes.js"
+import bannerRoutes from "./app/banner/banner.routes.js"
+import newsRoutes from "./app/news/news.routes.js"
+import shopRoutes from "./app/shop/shop.routes.js"
+import tagRoutes from "./app/tag/tag.routes.js"
+import contactRoutes from "./app/contact/contact.routes.js"
+import uploadRoutes from "./app/upload/upload.routes.js"
 
 import cors from "cors"
 
@@ -28,6 +35,13 @@ async function main() {
 
   app.use("/api/auth", authRoutes)
   app.use("/api/users", userRoutes)
+  app.use("/api/admin/cases", caseRoutes)
+  app.use("/api/admin/banners", bannerRoutes)
+  app.use("/api/admin/news", newsRoutes)
+  app.use("/api/admin/shop", shopRoutes)
+  app.use("/api/admin/tags", tagRoutes)
+  app.use("/api/contacts", contactRoutes)
+  app.use("/api/admin/upload", uploadRoutes)
 
   app.use(notFound)
   app.use(errorHandler)

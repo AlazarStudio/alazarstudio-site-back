@@ -10,8 +10,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  // provider = "mongodb"
+  // provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
@@ -20,14 +20,19 @@ enum Role {
   USER
 }
 
+enum Theme {
+  LIGHT
+  DARK
+}
+
 type UserInformation {
   firstName String?
   lastName  String?
 }
 
 model User {
-  id              Int              @id @default(autoincrement()) // postgresql
-  // id        String   @id @default(auto()) @map("_id") @db.ObjectId // mongodb
+  // id              Int              @id @default(autoincrement()) // postgresql
+  id              String           @id @default(auto()) @map("_id") @db.ObjectId // mongodb
   createdAt       DateTime         @default(now()) @map("created_at")
   updatedAt       DateTime         @updatedAt @map("updated_at")
   email           String           @unique
@@ -35,5 +40,77 @@ model User {
   name            String
   password        String
   role            Role             @default(USER)
+  theme           Theme            @default(LIGHT)
   userInformation UserInformation?
+}
+
+enum TagCategory {
+  BY_FIELD
+  BY_TYPE
+}
+
+model Tag {
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  name      String     @unique
+  category  TagCategory?
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+}
+
+model Case {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  imgSrc      String
+  urlText     String   @unique @map("url_text")
+  tagIds      String[] @default([]) @map("tag_ids") @db.ObjectId
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+}
+
+model Banner {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  imgSrc      String
+  date        DateTime
+  urlText     String   @unique @map("url_text")
+  tagIds      String[] @default([]) @map("tag_ids") @db.ObjectId
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+}
+
+model News {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  imgSrc      String
+  date        DateTime
+  urlText     String   @unique @map("url_text")
+  tagIds      String[] @default([]) @map("tag_ids") @db.ObjectId
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+}
+
+model Shop {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  imgSrc      String
+  price       Float
+  urlText     String   @unique @map("url_text")
+  tagIds      String[] @default([]) @map("tag_ids") @db.ObjectId
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+}
+
+model ContactRequest {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  phone     String?
+  email     String
+  company   String?
+  budget    String?
+  comment   String?
+  createdAt DateTime @default(now()) @map("created_at")
 }

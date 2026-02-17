@@ -6,5 +6,6 @@ export const UserFields = {
   login: true,
   name: true,
   role: true,
+  theme: true,
   userInformation: true
 }

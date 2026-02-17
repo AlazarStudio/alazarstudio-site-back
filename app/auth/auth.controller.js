@@ -39,6 +39,7 @@ export const authUser = asyncHandler(async (req, res) => {
         email: user.email,
         login: user.login,
         name: user.name,
+        theme: user.theme,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt
       },

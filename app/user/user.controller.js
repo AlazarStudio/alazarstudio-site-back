@@ -22,7 +22,7 @@ export const getUserProfile = asyncHandler(async (req, res) => {
 // @route   PUT /api/users/profile
 // @access  Private
 export const updateUserProfile = asyncHandler(async (req, res) => {
-  const { name, email, password, userInformation } = req.body
+  const { name, email, password, theme, userInformation } = req.body
 
   const updateData = {}
 
@@ -44,6 +44,9 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
     }
     updateData.password = await hash(password)
   }
+  if (theme && (theme === 'LIGHT' || theme === 'DARK')) {
+    updateData.theme = theme
+  }
   if (userInformation) updateData.userInformation = userInformation
 
   const updatedUser = await prisma.user.update({
@@ -51,6 +54,28 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
       id: req.user.id
     },
     data: updateData,
+    select: UserFields
+  })
+
+  res.json(updatedUser)
+})
+
+// @desc    Update user theme
+// @route   PUT /api/users/theme
+// @access  Private
+export const updateUserTheme = asyncHandler(async (req, res) => {
+  const { theme } = req.body
+
+  if (!theme || (theme !== 'LIGHT' && theme !== 'DARK')) {
+    res.status(400)
+    throw new Error("Theme must be LIGHT or DARK")
+  }
+
+  const updatedUser = await prisma.user.update({
+    where: {
+      id: req.user.id
+    },
+    data: { theme },
     select: UserFields
   })
 
